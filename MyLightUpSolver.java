@@ -82,34 +82,28 @@ public class MyLightUpSolver extends LightUpSolver {
             r ++;
         }
 
-        //only one light per bounded row
-        for(int[] i: rowSet){
-            for(int[] j: rowSet){
-                int lit0 = -1*(i[0] * lights.getDimension() + i[1] + 1);
-                int lit1 = -1*(j[0] * lights.getDimension() + j[1] + 1);
-                if(lit0 != lit1) {
-                    addClause(lit0, lit1);
-                }
-            }
+        int i = 0;
+        int[] row_lits = new int[rowSet.size()];
+        for(int[] field: rowSet){
+            row_lits[i] = field[0] * lights.getDimension() + field[1] + 1;
+            i++;
         }
+        solver.addAtMost(new VecInt(row_lits), 1);
 
-        //only one light per bounded column
-        for(int[] i: columnSet){
-            for(int[] j: columnSet){
-                int lit0 = -1*(i[0] * lights.getDimension() + i[1] + 1);
-                int lit1 = -1*(j[0] * lights.getDimension() + j[1] + 1);
-                if(lit0 != lit1) {
-                    addClause(lit0, lit1);
-                }
-            }
+        i = 0;
+        int[] column_lits = new int[columnSet.size()];
+        for(int[] field: columnSet){
+            column_lits[i] = field[0] * lights.getDimension() + field[1] + 1;
+            i++;
         }
+        solver.addAtMost(new VecInt(column_lits), 1);
 
         //at least one field in the bounded row or column must have a light
         Set<int[]> properLightPositions = rowSet;
         properLightPositions.addAll(columnSet); //Set of all possible light positions so that the specific field glows
 
         int[] lits = new int[properLightPositions.size()];
-        int i = 0;
+        i = 0;
         for(int[] field: properLightPositions){
             lits[i] = field[0] * lights.getDimension() + field[1] + 1;
             i++;

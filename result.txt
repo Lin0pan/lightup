@@ -4,6 +4,15 @@ Timeout is 300
 I am using the riddle folder './riddles'
 Found 23 riddles!
 == sat.14 ======================================================
+%% /Users/janek/Documents/dev/lightup/lightup/.: Score 0 of 1 (0,0%) successful!
+%% /Users/janek/Documents/dev/lightup/lightup/.: -1575131985417 ms
+%% end
+SVG is off
+Solution Check is on
+Timeout is 300
+I am using the riddle folder './riddles'
+Found 23 riddles!
+== sat.14 ======================================================
 Model found!
 Riddle is SAT
 Your answer is SAT
@@ -115,8 +124,8 @@ Riddle is SAT
 Your answer is SAT
 SOLVED!
 %% /Users/janek/Documents/dev/lightup/lightup/.: Score 23 of 23 (100,0%) successful!
-%% /Users/janek/Documents/dev/lightup/lightup/.:        314 ms
-% Max time:         46 ms
+%% /Users/janek/Documents/dev/lightup/lightup/.:        233 ms
+% Max time:         23 ms
 % Min time:          0 ms
-% Avg time:          8 ms
+% Avg time:          5 ms
 %% end
