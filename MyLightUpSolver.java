@@ -31,17 +31,8 @@ public class MyLightUpSolver extends LightUpSolver {
 
     @Override
     public Solution solve() throws ContradictionException, TimeoutException {
-        // 1. Calculate the set of clauses for the given game.
-        // You can access the current game instance with:
-        //lights.isBlock(0, 1);
-        
 
-        //add clauses with a helper
-        //addClause(-1, 2);
-        //or directly
-        //solver.addClause(new VecInt(new int[]{2, 3, 4, 5}));
 
-        // 2. Request a model by SAT solver.
         try{
         addAllClauses(lights);}
         catch(ContradictionException e){
@@ -162,10 +153,8 @@ public class MyLightUpSolver extends LightUpSolver {
 
         int numNeighbors = neighborsSet.size();
 
-        //System.out.println("constr. "+wallConstraint+" found with "+numNeighbors + "neighbors");
-
         if(wallConstraint > numNeighbors){
-            System.out.println("riddle is UNSAT because of wall constraint");
+            System.out.println("riddle is UNSAT");
             addClause(-1);
             addClause(1);
         }
@@ -308,13 +297,11 @@ public class MyLightUpSolver extends LightUpSolver {
 
         if(wallConstraint == 4){
             //all neighbors must have a light
-            int i =0;
-            int[] lits = new int[4];
             for(int n[]: neighborsSet){
-                lits[i] = n[0] * lights.getDimension() + n[1] + 1;
-                i++;
+                int lit = n[0] * lights.getDimension() + n[1] + 1;
+                addClause(lit);
             }
-            addClause(lits);
+
         }
 
 
@@ -359,8 +346,6 @@ public class MyLightUpSolver extends LightUpSolver {
         // Debugging:
         // System.out.println(Arrays.toString(c));
             solver.addClause(new VecInt(c));
-
-        //System.out.println(lights.getDimension());
     }
 
     

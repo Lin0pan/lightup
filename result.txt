@@ -59,24 +59,17 @@ SOLVED!
 Model found!
 Riddle is SAT
 Your answer is SAT
-Your solution contains errors:
-	Not enough lamps in neighbourhood of for constraint block: (7,10).
-NOT SOLVED :(
+SOLVED!
 == sat.19 ======================================================
 Model found!
 Riddle is SAT
 Your answer is SAT
-Your solution contains errors:
-	Not enough lamps in neighbourhood of for constraint block: (23,10).
-	Not enough lamps in neighbourhood of for constraint block: (31,42).
-NOT SOLVED :(
+SOLVED!
 == sat.18 ======================================================
 Model found!
 Riddle is SAT
 Your answer is SAT
-Your solution contains errors:
-	Not enough lamps in neighbourhood of for constraint block: (18,6).
-NOT SOLVED :(
+SOLVED!
 == sat.20 ======================================================
 Model found!
 Riddle is SAT
@@ -86,9 +79,7 @@ SOLVED!
 Model found!
 Riddle is SAT
 Your answer is SAT
-Your solution contains errors:
-	Not enough lamps in neighbourhood of for constraint block: (22,7).
-NOT SOLVED :(
+SOLVED!
 == sat.11 ======================================================
 Model found!
 Riddle is SAT
@@ -108,10 +99,7 @@ SOLVED!
 Model found!
 Riddle is SAT
 Your answer is SAT
-Your solution contains errors:
-	Not enough lamps in neighbourhood of for constraint block: (2,2).
-	Not enough lamps in neighbourhood of for constraint block: (4,2).
-NOT SOLVED :(
+SOLVED!
 == unsat.1 ======================================================
 Riddle is UNSAT 
 Your answer is UNSAT
@@ -126,9 +114,9 @@ Model found!
 Riddle is SAT
 Your answer is SAT
 SOLVED!
-%% /Users/janek/Documents/dev/lightup/lightup-proj/.: Score 18 of 23 (78,3%) successful!
-%% /Users/janek/Documents/dev/lightup/lightup-proj/.:        325 ms
-% Max time:         50 ms
+%% /Users/janek/Documents/dev/lightup/lightup/.: Score 23 of 23 (100,0%) successful!
+%% /Users/janek/Documents/dev/lightup/lightup/.:        313 ms
+% Max time:         41 ms
 % Min time:          0 ms
-% Avg time:          9 ms
+% Avg time:          8 ms
 %% end
