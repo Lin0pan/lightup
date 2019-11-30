@@ -115,8 +115,8 @@ Riddle is SAT
 Your answer is SAT
 SOLVED!
 %% /Users/janek/Documents/dev/lightup/lightup/.: Score 23 of 23 (100,0%) successful!
-%% /Users/janek/Documents/dev/lightup/lightup/.:        313 ms
-% Max time:         41 ms
+%% /Users/janek/Documents/dev/lightup/lightup/.:        416 ms
+% Max time:         49 ms
 % Min time:          0 ms
-% Avg time:          8 ms
+% Avg time:          9 ms
 %% end

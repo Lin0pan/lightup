@@ -27,11 +27,8 @@ public class MyLightUpSolver extends LightUpSolver {
         super(lights);
     }
 
-    
-
     @Override
     public Solution solve() throws ContradictionException, TimeoutException {
-
 
         try{
         addAllClauses(lights);}
@@ -41,7 +38,6 @@ public class MyLightUpSolver extends LightUpSolver {
 
         int[] result = solver.findModel();
         placeLights(lights, result);
-
 
         if (result != null) {
             System.out.println("Model found!");
@@ -55,15 +51,18 @@ public class MyLightUpSolver extends LightUpSolver {
         }
     }
 
-
     private void addFieldClauses(int row, int column, Lights lights) throws ContradictionException{
 
         int dim = lights.getDimension();
 
+        //Set of all fields in the specific row, bounded by walls or boarders.
         Set<int[]> rowSet = new HashSet<int[]>();
         rowSet.add(new int[]{row, column});
+
+        //Set of all fields in the specific column, bounded by walls or boarders.
         Set<int[]> columnSet = new HashSet<int[]>();
         columnSet.add(new int[]{row, column});
+
         int c = column;
         int r = row;
 
@@ -87,8 +86,8 @@ public class MyLightUpSolver extends LightUpSolver {
             r ++;
         }
 
-        //only one light per row till wall
-        for(int[] i: rowSet){                       //todo: get rid of redundance
+        //only one light per bounded row
+        for(int[] i: rowSet){
             for(int[] j: rowSet){
                 int lit0 = -1*(i[0] * lights.getDimension() + i[1] + 1);
                 int lit1 = -1*(j[0] * lights.getDimension() + j[1] + 1);
@@ -97,10 +96,8 @@ public class MyLightUpSolver extends LightUpSolver {
                 }
             }
         }
-    
 
-
-        //only one light per column till wall
+        //only one light per bounded column
         for(int[] i: columnSet){
             for(int[] j: columnSet){
                 int lit0 = -1*(i[0] * lights.getDimension() + i[1] + 1);
@@ -111,7 +108,7 @@ public class MyLightUpSolver extends LightUpSolver {
             }
         }
 
-        //at least one field in the row or column till wall must have a light
+        //at least one field in the bounded row or column must have a light
         Set<int[]> properLightPositions = rowSet;
         properLightPositions.addAll(columnSet); //Set of all possible light positions so that the specific field glows
 
@@ -122,11 +119,10 @@ public class MyLightUpSolver extends LightUpSolver {
             i++;
         }
         addClause(lits);
-
     }
 
 
-    private void addConstraindBlockClauses(int row, int column, Lights lights) throws ContradictionException {
+    private void addBlockConstrainedClauses(int row, int column, Lights lights) throws ContradictionException {
         int wallConstraint = lights.getBlockConstraint(row, column);
         Set<int[]> neighborsSet = new HashSet<>();
         int dim = lights.getDimension();
@@ -159,11 +155,10 @@ public class MyLightUpSolver extends LightUpSolver {
             addClause(1);
         }
 
-
-        //no neighbor must have a light
         if(wallConstraint == 0){
-            for(int[] n: neighborsSet){
-                int lit = -1*(n[0] * lights.getDimension() + n[1] + 1);
+            //no neighbor must have a light
+            for(int[] i: neighborsSet){
+                int lit = -1*(i[0] * lights.getDimension() + i[1] + 1);
                 addClause(lit);
             }
             return;
@@ -171,19 +166,18 @@ public class MyLightUpSolver extends LightUpSolver {
 
 
         if(wallConstraint == 1){
-
             //not more than one neighbor must have a light
-            for(int[] n: neighborsSet){
-                for(int[] m: neighborsSet){
-                    int lit1 = -1*(n[0] * lights.getDimension() + n[1] + 1);
-                    int lit2 = -1*(m[0] * lights.getDimension() + m[1] + 1);
+            for(int[] i: neighborsSet){
+                for(int[] j: neighborsSet){
+                    int lit1 = -1*(i[0] * lights.getDimension() + i[1] + 1);
+                    int lit2 = -1*(j[0] * lights.getDimension() + j[1] + 1);
                     if(lit1 != lit2) {
                         addClause(lit1, lit2);
                     }
                 }
             }
 
-            // at least one field must have a light
+            //at least one field must have a light
             int i = 0;
             int[] lits = new int[numNeighbors];
             for(int[] n:neighborsSet){
@@ -191,6 +185,7 @@ public class MyLightUpSolver extends LightUpSolver {
                 i++;
             }
             addClause(lits);
+            return;
         }
 
         if(wallConstraint == 2){
@@ -203,7 +198,7 @@ public class MyLightUpSolver extends LightUpSolver {
                     }
                     break;
                 case 3:
-                    //not more then two  neighbors must have a light
+                    //not more then 2 neighbors must have a light
                     for(int[] i: neighborsSet){
                         for(int[] j: neighborsSet){
                             for(int[] k: neighborsSet){
@@ -216,7 +211,7 @@ public class MyLightUpSolver extends LightUpSolver {
                             }
                         }
                     }
-                    //not less then two neighbors must have a light
+                    //not less then 2 neighbors must have a light
                     for(int[] i: neighborsSet){
                         for(int[] j: neighborsSet){
                             int lit0 = (i[0] * lights.getDimension() + i[1] + 1);
@@ -258,6 +253,7 @@ public class MyLightUpSolver extends LightUpSolver {
                 }
                 break;
             }
+            return;
         }
 
         if(wallConstraint == 3){
@@ -271,7 +267,7 @@ public class MyLightUpSolver extends LightUpSolver {
                     break;
 
                 case 4:
-                    //not all neighbors must have a light:
+                    //not all neighbors are allowed to have a light.
                     int[] lits = new int[4];
                     int i = 0;
                     for(int n[]: neighborsSet){
@@ -293,6 +289,7 @@ public class MyLightUpSolver extends LightUpSolver {
                     }
                     break;
             }
+            return;
         }
 
         if(wallConstraint == 4){
@@ -301,11 +298,8 @@ public class MyLightUpSolver extends LightUpSolver {
                 int lit = n[0] * lights.getDimension() + n[1] + 1;
                 addClause(lit);
             }
-
+            return;
         }
-
-
-
     }
 
     public void addAllClauses(Lights lights) throws ContradictionException{
@@ -317,7 +311,7 @@ public class MyLightUpSolver extends LightUpSolver {
                     addFieldClauses(row, column, lights);
                 }
                else if (lights.isConstrainedBlock(row, column)){
-                        addConstraindBlockClauses(row, column, lights);
+                    addBlockConstrainedClauses(row, column, lights);
                 }
             }
         }
@@ -326,6 +320,7 @@ public class MyLightUpSolver extends LightUpSolver {
     public void placeLights(Lights lights, int[] model){
         int dim = lights.getDimension();
         for(int lit: model){
+            //if variable is assigned true, add lamp to the corresponding field
             if(lit > 0){
                 int row = ((lit -1) / dim);
                 int column = lit - (dim * row) - 1;
