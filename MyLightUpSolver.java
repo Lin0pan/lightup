@@ -41,10 +41,6 @@ public class MyLightUpSolver extends LightUpSolver {
 
         if (result != null) {
             System.out.println("Model found!");
-            // SAT solver found a model
-            //3a. Interpret SAT solver result to find the correct lamps positions.
-            //You can use the already instantiated empty Solution object.
-            //solution.addLamp(0, 0); //remove this light
             return solution;
         } else {//3b. unsatisfiable
             return null;
@@ -122,7 +118,7 @@ public class MyLightUpSolver extends LightUpSolver {
     }
 
 
-    private void addBlockConstrainedClauses(int row, int column, Lights lights) throws ContradictionException {
+    private void addBlockConstraintClauses(int row, int column, Lights lights) throws ContradictionException {
         int wallConstraint = lights.getBlockConstraint(row, column);
         Set<int[]> neighborsSet = new HashSet<>();
         int dim = lights.getDimension();
@@ -150,6 +146,7 @@ public class MyLightUpSolver extends LightUpSolver {
         int numNeighbors = neighborsSet.size();
 
         if(wallConstraint > numNeighbors){
+            //wall constraints not satisfiable => UNSAT
             System.out.println("riddle is UNSAT");
             addClause(-1);
             addClause(1);
@@ -311,7 +308,7 @@ public class MyLightUpSolver extends LightUpSolver {
                     addFieldClauses(row, column, lights);
                 }
                else if (lights.isConstrainedBlock(row, column)){
-                    addBlockConstrainedClauses(row, column, lights);
+                    addBlockConstraintClauses(row, column, lights);
                 }
             }
         }
