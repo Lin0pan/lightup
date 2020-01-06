@@ -31,7 +31,8 @@ public class MyLightUpSolver extends LightUpSolver {
     public Solution solve() throws ContradictionException, TimeoutException {
 
         try{
-        addAllClauses(lights);}
+        addAllClauses(lights);
+        }
         catch(ContradictionException e){
             return null;
         }
@@ -42,7 +43,7 @@ public class MyLightUpSolver extends LightUpSolver {
         if (result != null) {
             System.out.println("Model found!");
             return solution;
-        } else {//3b. unsatisfiable
+        } else {
             return null;
         }
     }
@@ -88,6 +89,7 @@ public class MyLightUpSolver extends LightUpSolver {
             row_lits[i] = field[0] * lights.getDimension() + field[1] + 1;
             i++;
         }
+
         solver.addAtMost(new VecInt(row_lits), 1);
 
         i = 0;
@@ -100,7 +102,7 @@ public class MyLightUpSolver extends LightUpSolver {
 
         //at least one field in the bounded row or column must have a light
         Set<int[]> properLightPositions = rowSet;
-        properLightPositions.addAll(columnSet); //Set of all possible light positions so that the specific field glows
+        properLightPositions.addAll(columnSet);
 
         int[] lits = new int[properLightPositions.size()];
         i = 0;
@@ -117,22 +119,18 @@ public class MyLightUpSolver extends LightUpSolver {
         Set<int[]> neighborsSet = new HashSet<>();
         int dim = lights.getDimension();
 
-        //add upper neighbor
         if((row)>0 && lights.isEmpty(row-1, column)){
                 neighborsSet.add(new int[]{row-1, column});
         }
 
-        //add lower neighbor
         if((row)<(dim-1) && lights.isEmpty(row+1, column)){
                 neighborsSet.add(new int[]{row + 1, column});
         }
 
-        //add right neighbor
         if((column)<(dim-1) && lights.isEmpty(row, column+1)){
                 neighborsSet.add(new int[]{row, column + 1});
         }
 
-        //add left neighbor
         if((column)>0 && lights.isEmpty(row, column-1)){
                 neighborsSet.add(new int[]{row, column - 1});
         }
@@ -164,7 +162,7 @@ public class MyLightUpSolver extends LightUpSolver {
     public void placeLights(Lights lights, int[] model){
         int dim = lights.getDimension();
         for(int lit: model){
-            //if variable is assigned true, add lamp to the corresponding field
+            //if literal is positive, add lamp to the corresponding field
             if(lit > 0){
                 int row = ((lit -1) / dim);
                 int column = lit - (dim * row) - 1;
@@ -176,6 +174,8 @@ public class MyLightUpSolver extends LightUpSolver {
             }
         }
     }
+
+    
     /**
      * Adds the given literals as one clause to the sat solver instance.
      *
